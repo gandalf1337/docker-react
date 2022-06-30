@@ -1,0 +1,31 @@
+# Download docker image from Docker Hub
+FROM node:16-alpine 
+
+# Create container directory /app
+WORKDIR '/app' 
+
+COPY package.json .
+RUN npm install 
+
+# Copy over everything from the pwd to the container
+COPY . .
+
+# Starting command for the container
+CMD ["npm", "run", "start"]
+
+
+# Restarting course on 28.06.2022
+# Notes: 
+# docker build -f Dockerfile.dev .
+# 
+# docker run -p 3000:3000 # port mapping
+# -v /app/node_modules    # dont touch the node_modules folder in the container 
+# -v $(pwd):/app          # map the pwd into the app directory of teh container
+# [container ID]          # container ID that is to be started
+# 
+# docker exec -it [Container ID] [command for the container] # submitting a command to a running container
+#
+# docker attach [container ID] # with docker attach it is possible to send commands to the running container
+#                              # but it is not working when one has set up both containers with docker-compose.yml
+#                              # because in the test container multiple processes with multipe stdin and stdout are running
+#                              # only the primary process in the container can be reached with docker attach

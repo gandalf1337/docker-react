@@ -1,0 +1,30 @@
+# ???
+version: '3'
+# Services are Containers
+services:
+  
+  web:
+    # Build specifications of the container
+    build:
+      # specify the directory where alle teh files for the container are
+      context: .
+      # specify the name of the dockerfile
+      dockerfile: Dockerfile.dev
+    # specify port mappings 
+    ports:
+      - '3000:3000'
+    # set references to local machine
+    volumes:
+      # folders that should not be deleated
+      - /app/node_modules
+      # transfer everything from pwd to (:) app folder in the container
+      - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    # Overwrite the starting command in the Dockerfile.dev
+    command: ["npm", "run", "test"]
